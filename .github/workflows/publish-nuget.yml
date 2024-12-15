@@ -1,0 +1,73 @@
+name: Publish NuGet Package to NuGet.org
+
+on:
+  push:
+    branches:
+      - '**'  # Ejecutar en todas las ramas para pruebas
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Clona el repositorio
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Configura .NET
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "9.0"
+
+      # 3. Restaura las dependencias
+      - name: Restore dependencies
+        run: dotnet restore
+
+      # 4. Ejecuta los tests
+      - name: Run tests
+        run: dotnet test
+
+      # 5. Compila el proyecto
+      - name: Build project
+        run: dotnet build --configuration Release --no-restore --verbosity minimal
+
+  conditional-publish:
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
+    needs: validate
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Clona el repositorio
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Configura .NET
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "9.0"
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build the project
+        run: dotnet build --configuration Release --no-restore --verbosity minimal
+
+      # 3. Empaqueta el proyecto
+      - name: Pack project
+        run: dotnet pack --configuration Release --output ./nupkg --no-build
+
+      # 4. Publica el paquete a nuget.org
+      - name: Publish NuGet package to NuGet.org
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }} # API Key almacenada en GitHub Secrets
+        run: |
+          dotnet nuget push ./nupkg/*.nupkg \
+            --source "https://api.nuget.org/v3/index.json" \
+            --api-key $NUGET_API_KEY
