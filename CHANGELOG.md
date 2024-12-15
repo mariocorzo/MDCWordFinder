@@ -2,7 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.0] - 2024-12-14
+## [1.0.1] - 2024-12-15
+### Changed
+- Modified the GitHub Actions YAML file to publish only when merging into the `main` branch. 
+
+## [1.0.0] - 2024-12-15
 ### Added
 - Initial release of the **WordFinder** library.
 - Support for searching words in horizontal and vertical directions in a character matrix.
