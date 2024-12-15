@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDCWordFinder.Tests", "MDCWordFinder.Tests\MDCWordFinder.Tests.csproj", "{FBCA6440-569D-4FDE-9EDC-4890E4926558}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDCWordFinder", "MDCWordFinder\MDCWordFinder.csproj", "{30E9FC70-2CA1-4B6A-9D7C-CAA6E82BA956}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{FBCA6440-569D-4FDE-9EDC-4890E4926558}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBCA6440-569D-4FDE-9EDC-4890E4926558}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBCA6440-569D-4FDE-9EDC-4890E4926558}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30E9FC70-2CA1-4B6A-9D7C-CAA6E82BA956}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30E9FC70-2CA1-4B6A-9D7C-CAA6E82BA956}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30E9FC70-2CA1-4B6A-9D7C-CAA6E82BA956}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30E9FC70-2CA1-4B6A-9D7C-CAA6E82BA956}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
