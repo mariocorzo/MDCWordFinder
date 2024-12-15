@@ -55,7 +55,7 @@ jobs:
 
       # 3. Empaqueta el proyecto
       - name: Pack project
-        run: dotnet pack --configuration Release --output ./nupkg --no-build
+        run: dotnet pack --configuration Release --output ./nupkg
 
       # 4. Publica el paquete a nuget.org
       - name: Publish NuGet package to NuGet.org
