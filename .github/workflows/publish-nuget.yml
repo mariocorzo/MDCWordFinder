@@ -4,11 +4,6 @@ on:
   push:
     branches:
       - '**'  # Ejecutar en todas las ramas para pruebas
-  pull_request:
-    branches:
-      - main
-    types:
-      - closed
 
 jobs:
   validate:
@@ -38,7 +33,6 @@ jobs:
         run: dotnet build --configuration Release --no-restore --verbosity minimal
 
   conditional-publish:
-    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
     needs: validate
     runs-on: ubuntu-latest
 
