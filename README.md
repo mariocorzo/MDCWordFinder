@@ -1,3 +1,5 @@
+![GitHub release](https://img.shields.io/github/v/release/mariocorzo/MDCWordFinder)
+
 # WordFinder
 
 The **WordFinder** is a C# library designed to efficiently search for words in a matrix of characters, supporting both horizontal(from left to right) and vertical(from top to bottom) searches. It includes functionality to identify the top 10 most frequently occurring words from a given word stream. The project also includes unit tests using **xUnit** to ensure code quality and reliability.
