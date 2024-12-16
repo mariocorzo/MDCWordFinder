@@ -1,4 +1,6 @@
-﻿namespace MDCWordFinder;
+﻿using System.Collections.Concurrent;
+
+namespace MDCWordFinder;
 
 public class WordFinder
 {
@@ -19,49 +21,43 @@ public class WordFinder
             throw new ArgumentException("The provided matrix is not regular. All rows must have the same length.");
 
         _matrix = matrixList;
-        this._transposedMatrix = MatrixTransformer.Transpose(matrixList).ToList();
+        _transposedMatrix = MatrixTransformer.Transpose(matrixList).ToList();
     }
 
     public IEnumerable<string> Find(IEnumerable<string> wordstream)
     {
+        if (wordstream == null)
+            return [];
 
-        // Remove duplicate words and convert all to lowercase.
-        var uniqueWordstream = wordstream
-            .Select(word => word.ToLowerInvariant()) // Ensure case-insensitivity.
-            .Distinct()                             // Remove duplicates.
-            .ToList();
+        var wordCounts = new ConcurrentDictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
-        var wordCounts = uniqueWordstream.ToDictionary(word => word, _ => 0);
+        // Remove duplicates, ensure case-insensitivity and convert the words to lowercase
+        var uniqueWordstream = wordstream.Distinct(StringComparer.OrdinalIgnoreCase).Select(word => word.ToLowerInvariant()).ToList();
 
-        // Count occurrences in horizontal and vertical rows in parallel.
         Parallel.ForEach(uniqueWordstream, word =>
         {
             int wordCount = 0;
 
-            // Count in horizontal rows.
+            // Count in horizontal rows
             foreach (var row in _matrix)
             {
                 wordCount += CountOccurrences(row, word);
             }
 
-            // Count in vertical rows (transposed).
+            // Count in vertical rows
             foreach (var col in _transposedMatrix)
             {
                 wordCount += CountOccurrences(col, word);
             }
 
-            // Use a thread-safe block to update the dictionary.
-            lock (wordCounts)
-            {
-                wordCounts[word] += wordCount;
-            }
+            wordCounts.AddOrUpdate(word, wordCount, (key, oldValue) => oldValue + wordCount);
         });
 
         return wordCounts
-            .Where(kv => kv.Value > 0)        // Filter words with count > 0.
-            .OrderByDescending(kv => kv.Value) // Sort by value in descending order.
-            .ThenBy(kv => kv.Key)             // Break ties by sorting keys alphabetically.
-            .Take(TopCount)                   // Select the first 'topCount' entries.
+            .Where(kv => kv.Value > 0)
+            .OrderByDescending(kv => kv.Value)
+            .ThenBy(kv => kv.Key)
+            .Take(TopCount)
             .Select(kv => kv.Key);
     }
 

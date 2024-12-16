@@ -206,4 +206,26 @@ public class UnitTest1
         // Assert
         Assert.Equal(["golf", "box", "rugby", "football", "hockey"], result);
     }
+
+     [Fact]
+    public void Find_ShouldHandle_RectangularMatrix()
+    {
+        // Arrange
+        var matrix = new List<string>
+    {
+        "zREDaaz",
+        "SdBWred",
+        "UaATwte",
+        "NORaqwr"
+    };
+        var wordFinder = new WordFinder(matrix);
+
+        var wordstream = new List<string> { "sun", "bar", "red" };
+
+        // Act
+        var result = wordFinder.Find(wordstream).ToList();
+
+        // Assert
+        Assert.Equal(["red", "bar", "sun"], result);
+    }
 }

@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.2] - 2024-12-16
+### Changed
+- Updated the code to use `ConcurrentDictionary` to prevent concurrency issues. 
+
 ## [1.0.1] - 2024-12-15
 ### Changed
 - Modified the GitHub Actions YAML file to publish only when merging into the `main` branch. 
